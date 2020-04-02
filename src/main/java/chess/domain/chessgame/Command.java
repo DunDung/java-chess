@@ -42,9 +42,7 @@ public class Command {
 
 	private Position createPosition(int order) {
 		String[] Coordinates = command.split(BLANK);
-		char x = Coordinates[order].charAt(FIRST_INDEX);
-		int y = Coordinates[order].charAt(SECOND_INDEX) - CHAR_INT_CHANGE_VALUE;
-		return Position.of(y, x);
+		return Position.of(Coordinates[order]);
 	}
 
 	public void execute(ChessBoard chessBoard) {
