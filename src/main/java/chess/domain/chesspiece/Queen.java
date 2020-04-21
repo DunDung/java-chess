@@ -23,7 +23,7 @@ public class Queen extends ValuablePiece {
 
 	@Override
 	public String getName() {
-		return NameUtils.parseName(NAME, team);
+		return team.parseName(NAME);
 	}
 
 	@Override

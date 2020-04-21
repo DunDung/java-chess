@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import chess.domain.Direction;
+import chess.domain.Team;
 
 public class Position {
 	private static final int MIN_INT = 1;
@@ -98,5 +99,9 @@ public class Position {
 	@Override
 	public String toString() {
 		return ((char)(y + ALPHABET_DEFORMATION_VALUE)) + "" + x;
+	}
+
+	public boolean isRowEquals(int row) {
+		return x == row;
 	}
 }

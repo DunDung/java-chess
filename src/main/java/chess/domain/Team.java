@@ -13,4 +13,11 @@ public enum Team {
 	public String getName() {
 		return name;
 	}
+
+	public String parseName(String name) {
+		if (this == Team.WHITE) {
+			return name;
+		}
+		return name.toUpperCase();
+	}
 }

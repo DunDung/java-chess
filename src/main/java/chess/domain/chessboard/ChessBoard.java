@@ -43,11 +43,6 @@ public class ChessBoard {
 			.collect(Collectors.toList());
 	}
 
-	public List<ChessPiece> findPieces() {
-		List<ChessPiece> chessPieces = findByTeam(Team.WHITE);
-		chessPieces.addAll(findByTeam(Team.BLACK));
-		return chessPieces;
-	}
 
 	private List<ChessPiece> findByTeam(Team team) {
 		return rows.stream()

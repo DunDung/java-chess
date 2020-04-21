@@ -15,27 +15,31 @@ import chess.domain.utils.NameUtils;
 public class Pawn extends ChessPiece {
 	private static final String NAME = "p";
 
-	private boolean isMoved;
 
 	public Pawn(Position position, Team team) {
 		super(position, team);
-		this.isMoved = false;
 	}
 
 	@Override
 	public String getName() {
-		return NameUtils.parseName(NAME, team);
+		return team.parseName(NAME);
 	}
 
 	@Override
 	public boolean isNotNeedCheckPath() {
-		return isMoved;
+		return isNotMoved() == false;
+	}
+
+	private boolean isNotMoved() {
+		if (team == Team.WHITE) {
+			return position.isRowEquals(2);
+		}
+		return position.isRowEquals(7);
 	}
 
 	@Override
 	public Positions makePathAndValidate(ChessPiece targetPiece) {
 		validateCanGo(targetPiece);
-		isMoved = true;
 		return moveManager.makePath(
 			targetPiece.position, getCanGoDirections());
 	}
@@ -52,7 +56,7 @@ public class Pawn extends ChessPiece {
 	private List<Direction> getCanGoDirections() {
 		List<Direction> directions = new ArrayList<>();
 		directions.addAll(Direction.getPawnDirections(team));
-		if (isMoved) {
+		if (!isNotMoved()) {
 			return directions;
 		}
 		if (team == Team.WHITE) {

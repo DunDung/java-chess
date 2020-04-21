@@ -27,8 +27,7 @@ public class ChessGame {
 	}
 
 	private void initMenu() {
-		while (isNotAllowedMenu())
-			;
+		while (isNotAllowedMenu());
 	}
 
 	private boolean isNotAllowedMenu() {
