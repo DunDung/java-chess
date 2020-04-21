@@ -2,7 +2,6 @@ package chess.domain.chesspiece;
 
 import chess.domain.Team;
 import chess.domain.position.Position;
-import chess.domain.utils.NameUtils;
 
 public class Knight extends WorthlessPiece {
 	private static final String NAME = "n";

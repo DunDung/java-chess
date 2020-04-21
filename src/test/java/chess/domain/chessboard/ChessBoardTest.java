@@ -10,8 +10,8 @@ import chess.domain.chesspiece.Blank;
 import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.Pawn;
 import chess.domain.chesspiece.Rook;
-import chess.domain.position.Position;
 import chess.domain.factory.BoardFactory;
+import chess.domain.position.Position;
 import chess.view.OutputView;
 
 public class ChessBoardTest {

@@ -9,7 +9,6 @@ import chess.domain.Direction;
 import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
-import chess.domain.utils.NameUtils;
 
 public class Bishop extends ValuablePiece {
 	private static final List<Direction> DIRECTIONS;

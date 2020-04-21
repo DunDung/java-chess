@@ -2,7 +2,6 @@ package chess.domain.chesspiece;
 
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
-import chess.domain.utils.NameUtils;
 
 public class Blank extends ChessPiece {
 	private static final String NAME = ".";
@@ -14,7 +13,7 @@ public class Blank extends ChessPiece {
 
 	@Override
 	public String getName() {
-		return team.parseName(NAME);
+		return NAME;
 	}
 
 	@Override
@@ -31,5 +30,4 @@ public class Blank extends ChessPiece {
 	public void validateCanGo(ChessPiece targetPiece) {
 		throw new UnsupportedOperationException(NOT_SUPPORT_MESSAGE);
 	}
-
 }
