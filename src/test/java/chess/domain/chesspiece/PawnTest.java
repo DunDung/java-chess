@@ -10,8 +10,8 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 
 public class PawnTest {
-	private ChessPiece whiteTeamPawn;
-	private ChessPiece blackTeamPawn;
+	private Piece whiteTeamPawn;
+	private Piece blackTeamPawn;
 
 	@BeforeEach
 	void setUp() {

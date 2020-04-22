@@ -8,12 +8,12 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public abstract class ChessPiece {
+public abstract class Piece {
 	protected final Team team;
 	protected Position position;
-	protected final MoveManager moveManager;
+	final MoveManager moveManager;
 
-	public ChessPiece(Position position, Team team) {
+	public Piece(Position position, Team team) {
 		this.position = position;
 		this.team = team;
 		this.moveManager = new MoveManager(this.position);
@@ -24,7 +24,7 @@ public abstract class ChessPiece {
 	}
 
 	public boolean isNotMatchTeam(Team team) {
-		return (this.team == team) == false;
+		return !(this.team == team);
 	}
 
 	public boolean isBlankPiece() {
@@ -39,8 +39,8 @@ public abstract class ChessPiece {
 		return this.position.equals(position);
 	}
 
-	public boolean isSameTeam(ChessPiece chessPiece) {
-		return chessPiece.isMatchTeam(this.team);
+	public boolean isSameTeam(Piece piece) {
+		return piece.isMatchTeam(this.team);
 	}
 
 	public void changePosition(Position position) {
@@ -48,24 +48,24 @@ public abstract class ChessPiece {
 		this.moveManager.changePosition(position);
 	}
 
-	public void canMove(ChessPiece chessPiece, Function<Position, ChessPiece> findByPosition) {
+	public void canMove(Piece piece, Function<Position, Piece> findByPosition) {
 		if (isNotNeedCheckPath()) {
-			validateCanGo(chessPiece);
+			validateCanGo(piece);
 			return;
 		}
-		Positions positions = makePathAndValidate(chessPiece);
+		Positions positions = makePathAndValidate(piece);
 		positions.validateCanMovePath(findByPosition);
 	}
 
-	public String getPositionName() {
-		return position.toString();
+	public Position getPosition() {
+		return position;
 	}
 
 	public abstract boolean isNotNeedCheckPath();
 
-	public abstract void validateCanGo(ChessPiece targetPiece);
+	public abstract void validateCanGo(Piece targetPiece);
 
-	public abstract Positions makePathAndValidate(ChessPiece targetPiece);
+	public abstract Positions makePathAndValidate(Piece targetPiece);
 
 	public abstract String getName();
 
@@ -75,7 +75,7 @@ public abstract class ChessPiece {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		ChessPiece that = (ChessPiece)o;
+		Piece that = (Piece)o;
 		return team == that.team &&
 			position.equals(that.position);
 	}

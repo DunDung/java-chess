@@ -9,7 +9,7 @@ import chess.domain.Direction;
 import chess.domain.Team;
 import chess.domain.position.Position;
 
-public class King extends WorthlessPiece {
+public class King extends RouteUncheckPiece {
 	private static final List<Direction> DIRECTIONS;
 	private static final String NAME = "k";
 
@@ -33,7 +33,7 @@ public class King extends WorthlessPiece {
 	}
 
 	@Override
-	public void validateCanGo(ChessPiece targetPiece) {
+	public void validateCanGo(Piece targetPiece) {
 		Direction direction = moveManager.getMatchDirection(targetPiece.position);
 		moveManager.validateMove(direction, DIRECTIONS);
 	}

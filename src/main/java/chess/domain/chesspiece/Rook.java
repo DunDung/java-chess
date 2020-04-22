@@ -10,7 +10,7 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public class Rook extends ValuablePiece {
+public class Rook extends RouteCheckPiece {
 	private static final List<Direction> DIRECTIONS;
 	private static final String NAME = "r";
 
@@ -33,7 +33,7 @@ public class Rook extends ValuablePiece {
 	}
 
 	@Override
-	public Positions makePathAndValidate(ChessPiece targetPiece) {
+	public Positions makePathAndValidate(Piece targetPiece) {
 		return moveManager.makePath(targetPiece.position, DIRECTIONS);
 	}
 

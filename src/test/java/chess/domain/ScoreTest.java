@@ -7,17 +7,17 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.position.Position;
 
 public class ScoreTest {
 
 	@Test
 	void ofTest() {
-		ChessPiece chessPiece = new Pawn(Position.of(1, 1), Team.WHITE);
+		Piece piece = new Pawn(Position.of(1, 1), Team.WHITE);
 
-		assertThat(Score.of(chessPiece)).isEqualTo(Score.PAWN_SCORE);
+		assertThat(Score.of(piece)).isEqualTo(Score.PAWN_SCORE);
 	}
 
 	@Test

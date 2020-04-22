@@ -8,7 +8,7 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public class Queen extends ValuablePiece {
+public class Queen extends RouteCheckPiece {
 	private static final List<Direction> DIRECTIONS;
 	private static final String NAME = "q";
 
@@ -31,7 +31,7 @@ public class Queen extends ValuablePiece {
 	}
 
 	@Override
-	public Positions makePathAndValidate(ChessPiece targetPiece) {
+	public Positions makePathAndValidate(Piece targetPiece) {
 		return moveManager.makePath(targetPiece.position, DIRECTIONS);
 	}
 }

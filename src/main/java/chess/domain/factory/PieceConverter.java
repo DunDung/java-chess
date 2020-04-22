@@ -6,10 +6,10 @@ import java.util.function.Function;
 import chess.domain.Team;
 import chess.domain.chesspiece.Bishop;
 import chess.domain.chesspiece.Blank;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.King;
 import chess.domain.chesspiece.Knight;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.chesspiece.Queen;
 import chess.domain.chesspiece.Rook;
 import chess.domain.position.Position;
@@ -29,17 +29,17 @@ public enum PieceConverter {
 	ROOK_WHITE("r", (position) -> new Rook(Position.of(position), Team.WHITE)),
 	BLANK(".", (position) -> new Blank(Position.of(position)));
 
-	private static final String NOT_EXIST_NAME_MESSAGE = "존재하지 않는 ChessPiece 이름 입니다.";
+	private static final String NOT_EXIST_NAME_MESSAGE = "존재하지 않는 Piece 이름 입니다.";
 
 	private String name;
-	private Function<String, ChessPiece> creator;
+	private Function<String, Piece> creator;
 
-	PieceConverter(String name, Function<String, ChessPiece> creator) {
+	PieceConverter(String name, Function<String, Piece> creator) {
 		this.name = name;
 		this.creator = creator;
 	}
 
-	public static ChessPiece convert(String pieceName, String position) {
+	public static Piece convert(String pieceName, String position) {
 		return Arrays.stream(values())
 			.filter(converter -> converter.name.equals(pieceName))
 			.findFirst()

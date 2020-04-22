@@ -13,7 +13,7 @@ import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
 public class BishopTest {
-	private ChessPiece bishop;
+	private Piece bishop;
 
 	@BeforeEach
 	void setUp() {

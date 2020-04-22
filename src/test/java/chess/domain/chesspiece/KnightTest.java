@@ -11,7 +11,7 @@ public class KnightTest {
 
 	@Test
 	void validateMoveTest() {
-		ChessPiece knight = new Knight(Position.of(4, 4), Team.BLACK);
+		Piece knight = new Knight(Position.of(4, 4), Team.BLACK);
 		knight.validateCanGo(new Blank(Position.of(6, 5)));
 		knight.validateCanGo(new Blank(Position.of(6, 3)));
 		knight.validateCanGo(new Blank(Position.of(5, 6)));

@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import chess.domain.Team;
 import chess.domain.chesspiece.Bishop;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.Knight;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.chesspiece.Queen;
 import chess.domain.chesspiece.Rook;
 import chess.domain.position.Position;
@@ -56,8 +56,8 @@ public class RowTest {
 
 	@Test
 	void findByTeamTest() {
-		List<ChessPiece> actualPieces = row.findByTeam(Team.WHITE);
-		List<ChessPiece> expectedPieces = Arrays.asList(
+		List<Piece> actualPieces = row.findByTeam(Team.WHITE);
+		List<Piece> expectedPieces = Arrays.asList(
 			new Rook(Position.of(1, 1), Team.WHITE),
 			new Knight(Position.of(1, 2), Team.WHITE)
 		);

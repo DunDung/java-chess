@@ -1,77 +1,83 @@
 package chess.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import chess.dao.ChessDAO;
+import chess.dao.BoardDAO;
 import chess.dao.TurnDAO;
 import chess.domain.Result;
 import chess.domain.Status;
 import chess.domain.Team;
 import chess.domain.Turn;
-import chess.domain.chessboard.ChessBoard;
-import chess.domain.chesspiece.ChessPiece;
+import chess.domain.chessboard.Board;
+import chess.domain.chesspiece.Piece;
 import chess.domain.factory.BoardFactory;
 import chess.domain.position.Position;
-import chess.dto.ChessDTO;
+import chess.dto.PieceDTO;
 
 public class ChessService {
-	private final ChessDAO chessDAO;
+	private static final boolean FIRST_TURN = true;
+
+	private final BoardDAO boardDAO;
 	private final TurnDAO turnDAO;
 
 	public ChessService() {
-		chessDAO = new ChessDAO();
+		boardDAO = new BoardDAO();
 		turnDAO = new TurnDAO();
 	}
 
-	public ChessBoard move(Position startPosition, Position targetPosition) {
-		ChessBoard chessBoard = find();
-		ChessPiece startPiece = chessBoard.findByPosition(startPosition);
-		chessBoard.move(startPosition, targetPosition);
-		chessDAO.update(targetPosition, startPiece.getName());
-		chessDAO.update(startPosition, ".");
-		turnDAO.changeTurn(chessBoard.isWhiteTurn());
-		return chessBoard;
+	public Board move(Position startPosition, Position targetPosition) {
+		Board board = find();
+		Piece startPiece = board.findByPosition(startPosition);
+		board.move(startPosition, targetPosition);
+		boardDAO.update(targetPosition, startPiece.getName());
+		boardDAO.update(startPosition, ".");
+		turnDAO.changeTurn(board.isWhiteTurn());
+		return board;
 	}
 
-	public ChessBoard find() {
-		List<ChessDTO> chessDTOS = chessDAO.findAll();
-		Turn turn = turnDAO.find();
-		if (chessDTOS.isEmpty()) {
+	public Board find() {
+		List<PieceDTO> pieceDTOS = boardDAO.findAll();
+		Turn turn;
+		try {
+			turn = turnDAO.find();
+		} catch (NoSuchElementException e) {
+			turn = new Turn(FIRST_TURN);
+			turnDAO.addTurn(FIRST_TURN);
+		}
+		if (pieceDTOS.isEmpty()) {
 			return createBoard(BoardFactory.createBoard());
 		}
-		ChessBoard chessBoard = BoardFactory.createBoard(chessDTOS, turn);
-		return chessBoard;
+		return BoardFactory.createBoard(pieceDTOS, turn);
 	}
 
-	private ChessBoard createBoard(ChessBoard chessBoard) {
-		List<ChessPiece> chessPieces = chessBoard.findAll();
-		for (ChessPiece chessPiece : chessPieces) {
-			String position = chessPiece.getPositionName();
-			String name = chessPiece.getName();
-			chessDAO.addPiece(new ChessDTO(position, name));
+	private Board createBoard(Board board) {
+		List<Piece> pieces = board.findAll();
+		for (Piece piece : pieces) {
+			boardDAO.addPiece(PieceDTO.from(piece));
 		}
-		return chessBoard;
+		return board;
 	}
 
-	public ChessBoard restart() {
-		chessDAO.removeAll();
+	public Board restart() {
+		boardDAO.removeAll();
 		turnDAO.removeAll();
 		return find();
 	}
 
 	public boolean isEnd() {
-		ChessBoard chessBoard = find();
-		return chessBoard.isLiveBothKing() == false;
+		Board board = find();
+		return !board.isLiveBothKing();
 	}
 
 	public boolean isWinWhiteTeam() {
-		ChessBoard chessBoard = find();
-		return chessBoard.isLiveKing(Team.WHITE);
+		Board board = find();
+		return board.isLiveKing(Team.WHITE);
 	}
 
 	public Result status() {
-		ChessBoard chessBoard = find();
-		Status status = chessBoard.createStatus();
+		Board board = find();
+		Status status = board.createStatus();
 		return status.getResult();
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import chess.domain.chessboard.Row;
-import chess.domain.chesspiece.ChessPiece;
+import chess.domain.chesspiece.Piece;
 
 public class Status {
 	private static final int MIN_DUPLICATED_COUNT = 2;
@@ -22,12 +22,12 @@ public class Status {
 	}
 
 	private double sumScore(Team team) {
-		List<ChessPiece> chessPieces = new ArrayList<>();
+		List<Piece> pieces = new ArrayList<>();
 		for (Row row : rows) {
-			chessPieces.addAll(row.findByTeam(team));
+			pieces.addAll(row.findByTeam(team));
 		}
 
-		List<Score> scores = chessPieces.stream()
+		List<Score> scores = pieces.stream()
 			.map(Score::of)
 			.collect(Collectors.toList());
 

@@ -2,7 +2,7 @@ package chess.domain.chessgame;
 
 import chess.domain.Result;
 import chess.domain.Status;
-import chess.domain.chessboard.ChessBoard;
+import chess.domain.chessboard.Board;
 import chess.domain.position.Position;
 import chess.view.OutputView;
 
@@ -47,13 +47,13 @@ public class Command {
 		return Position.of(y, x);
 	}
 
-	public void execute(ChessBoard chessBoard) {
+	public void execute(Board board) {
 		if (menu == Menu.MOVE) {
-			chessBoard.move(createStartPosition(), createTargetPosition());
+			board.move(createStartPosition(), createTargetPosition());
 		}
 
 		if (menu == Menu.STATUS) {
-			Status status = chessBoard.createStatus();
+			Status status = board.createStatus();
 			Result result = status.getResult();
 			OutputView.printResult(result);
 		}

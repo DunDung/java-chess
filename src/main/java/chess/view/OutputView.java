@@ -3,16 +3,16 @@ package chess.view;
 import java.util.List;
 
 import chess.domain.Result;
-import chess.domain.chessboard.ChessBoard;
+import chess.domain.chessboard.Board;
 import chess.domain.chessboard.Row;
-import chess.domain.chesspiece.ChessPiece;
+import chess.domain.chesspiece.Piece;
 
 public class OutputView {
 	private static final int BOARD_FIRST_INDEX = 0;
 	private static final int BOARD_LAST_INDEX = 7;
 	private static final String RESULT_FORMAT = "BLACK : %s점, WHITE : %s점";
 
-	public static void printBoard(ChessBoard chessBoard) {
+	public static void printBoard(Board chessBoard) {
 		List<Row> board = chessBoard.getRows();
 		for (int column = BOARD_FIRST_INDEX; column <= BOARD_LAST_INDEX; column++) {
 			printRow(board.get(column));
@@ -22,8 +22,8 @@ public class OutputView {
 
 	private static void printRow(Row row) {
 		for (int index = BOARD_FIRST_INDEX; index <= BOARD_LAST_INDEX; index++) {
-			ChessPiece chessPiece = row.get(index);
-			System.out.print(chessPiece.getName());
+			Piece piece = row.get(index);
+			System.out.print(piece.getName());
 		}
 	}
 

@@ -8,30 +8,30 @@ import java.util.List;
 
 import chess.domain.Team;
 import chess.domain.Turn;
-import chess.domain.chessboard.ChessBoard;
+import chess.domain.chessboard.Board;
 import chess.domain.chessboard.Row;
 import chess.domain.chesspiece.Bishop;
 import chess.domain.chesspiece.Blank;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.King;
 import chess.domain.chesspiece.Knight;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.chesspiece.Queen;
 import chess.domain.chesspiece.Rook;
 import chess.domain.position.Position;
-import chess.dto.ChessDTO;
+import chess.dto.PieceDTO;
 
 public class BoardFactory {
 	private static final String NOT_MATCH_ALL_PIECE_NUMBER_MESSAGE = "64개의 ChessDTO가 아닙니다.";
 	private static final String NOT_MATCH_POSITION_MESSAGE = "찾을 수 없는 포지션입니다.";
 	private static final String POSITION_FORMAT = "%c%d";
 
-	public static ChessBoard createBoard() {
+	public static Board createBoard() {
 		List<Row> board = new ArrayList<>();
 		board.addAll(createBlackTeam());
 		board.addAll(createBlankTeam());
 		board.addAll(createWhiteTeam());
-		return new ChessBoard(board, new Turn(true));
+		return new Board(board, new Turn(true));
 	}
 
 	private static List<Row> createBlackTeam() {
@@ -55,59 +55,59 @@ public class BoardFactory {
 	}
 
 	private static Row createExecutive(int index, Team team) {
-		List<ChessPiece> chessPieces = new ArrayList<>();
-		chessPieces.add(new Rook(Position.of(index, ROOK_FIRST_INDEX.get()), team));
-		chessPieces.add(new Knight(Position.of(index, KNIGHT_FIRST_INDEX.get()), team));
-		chessPieces.add(new Bishop(Position.of(index, BISHOP_FIRST_INDEX.get()), team));
-		chessPieces.add(new Queen(Position.of(index, QUEEN_INDEX.get()), team));
-		chessPieces.add(new King(Position.of(index, KING_INDEX.get()), team));
-		chessPieces.add(new Bishop(Position.of(index, BISHOP_SECOND_INDEX.get()), team));
-		chessPieces.add(new Knight(Position.of(index, KNIGHT_SECOND_INDEX.get()), team));
-		chessPieces.add(new Rook(Position.of(index, ROOK_SECOND_INDEX.get()), team));
-		return new Row(chessPieces);
+		List<Piece> pieces = new ArrayList<>();
+		pieces.add(new Rook(Position.of(index, ROOK_FIRST_INDEX.get()), team));
+		pieces.add(new Knight(Position.of(index, KNIGHT_FIRST_INDEX.get()), team));
+		pieces.add(new Bishop(Position.of(index, BISHOP_FIRST_INDEX.get()), team));
+		pieces.add(new Queen(Position.of(index, QUEEN_INDEX.get()), team));
+		pieces.add(new King(Position.of(index, KING_INDEX.get()), team));
+		pieces.add(new Bishop(Position.of(index, BISHOP_SECOND_INDEX.get()), team));
+		pieces.add(new Knight(Position.of(index, KNIGHT_SECOND_INDEX.get()), team));
+		pieces.add(new Rook(Position.of(index, ROOK_SECOND_INDEX.get()), team));
+		return new Row(pieces);
 	}
 
 	private static Row createPawns(int index, Team team) {
-		List<ChessPiece> chessPieces = new ArrayList<>();
+		List<Piece> pieces = new ArrayList<>();
 		for (int y = BOARD_FROM_INDEX.get(); y <= BOARD_TO_INDEX.get(); y++) {
-			chessPieces.add(new Pawn(Position.of(index, y), team));
+			pieces.add(new Pawn(Position.of(index, y), team));
 		}
-		return new Row(chessPieces);
+		return new Row(pieces);
 	}
 
 	private static Row createBlanks(int index) {
-		List<ChessPiece> chessPieces = new ArrayList<>();
+		List<Piece> pieces = new ArrayList<>();
 		for (int y = BOARD_FROM_INDEX.get(); y <= BOARD_TO_INDEX.get(); y++) {
-			chessPieces.add(new Blank(Position.of(index, y)));
+			pieces.add(new Blank(Position.of(index, y)));
 		}
-		return new Row(chessPieces);
+		return new Row(pieces);
 	}
 
-	public static ChessBoard createBoard(List<ChessDTO> chessDTOS, Turn turn) {
-		if (chessDTOS.size() != ALL_PIECE_NUMBER.get()) {
+	public static Board createBoard(List<PieceDTO> pieceDTOS, Turn turn) {
+		if (pieceDTOS.size() != ALL_PIECE_NUMBER.get()) {
 			throw new IllegalArgumentException(NOT_MATCH_ALL_PIECE_NUMBER_MESSAGE);
 		}
 		List<Row> rows = new ArrayList<>();
 		for (int x = BOARD_FROM_INDEX.get(); x <= BOARD_TO_INDEX.get(); x++) {
-			rows.add(createRow(chessDTOS, x));
+			rows.add(createRow(pieceDTOS, x));
 		}
-		return new ChessBoard(rows, turn);
+		return new Board(rows, turn);
 	}
 
-	private static Row createRow(List<ChessDTO> chessDTOS, int x) {
-		List<ChessPiece> chessPieces = new ArrayList<>();
+	private static Row createRow(List<PieceDTO> pieceDTOS, int x) {
+		List<Piece> pieces = new ArrayList<>();
 		for (int y = ROW_FROM_INDEX.get(); y <= ROW_TO_INDEX.get(); y++) {
-			ChessDTO chessDTO = findByPosition(chessDTOS, String.format(POSITION_FORMAT, y, x));
-			String name = chessDTO.getName();
-			String position = chessDTO.getPosition();
-			chessPieces.add(PieceConverter.convert(name, position));
+			PieceDTO pieceDTO = findByPosition(pieceDTOS, String.format(POSITION_FORMAT, y, x));
+			String name = pieceDTO.getName();
+			String position = pieceDTO.getPosition();
+			pieces.add(PieceConverter.convert(name, position));
 		}
-		return new Row(chessPieces);
+		return new Row(pieces);
 	}
 
-	private static ChessDTO findByPosition(List<ChessDTO> chessDTOS, String position) {
-		return chessDTOS.stream()
-			.filter(chessDTO -> chessDTO.getPosition().equals(position))
+	private static PieceDTO findByPosition(List<PieceDTO> pieceDTOS, String position) {
+		return pieceDTOS.stream()
+			.filter(pieceDTO -> pieceDTO.getPosition().equals(position))
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException(NOT_MATCH_POSITION_MESSAGE));
 	}

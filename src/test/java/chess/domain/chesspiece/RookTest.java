@@ -15,7 +15,7 @@ public class RookTest {
 	@DisplayName("못 가는 경우")
 	@Test
 	void makePathTest1() {
-		ChessPiece rook = new Rook(Position.of(4, 4), Team.WHITE);
+		Piece rook = new Rook(Position.of(4, 4), Team.WHITE);
 
 		assertThatThrownBy(() -> rook.makePathAndValidate(new Blank(Position.of(3, 5))))
 			.isInstanceOf(IllegalArgumentException.class);
@@ -24,7 +24,7 @@ public class RookTest {
 	@DisplayName("갈 수 있는 경우")
 	@Test
 	void makePathTest2() {
-		ChessPiece rook = new Rook(Position.of(4, 4), Team.WHITE);
+		Piece rook = new Rook(Position.of(4, 4), Team.WHITE);
 		Positions actualPositions = rook.makePathAndValidate(new Blank(Position.of(4, 1)));
 		Positions expectedPositions = new Positions(
 			Arrays.asList(Position.of(4, 3), Position.of(4, 2)));

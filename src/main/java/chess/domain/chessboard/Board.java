@@ -1,6 +1,7 @@
 package chess.domain.chessboard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -10,11 +11,11 @@ import chess.domain.Status;
 import chess.domain.Team;
 import chess.domain.Turn;
 import chess.domain.chesspiece.Blank;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.King;
+import chess.domain.chesspiece.Piece;
 import chess.domain.position.Position;
 
-public class ChessBoard {
+public class Board {
 	private static final String CANNOT_MOVE_PATH = "이동할 수 없는 경로 입니다.";
 	private static final String SAME_TEAM_MESSAGE = "같은 팀입니다.";
 	private static final String NOT_CHESS_PIECE_MESSAGE = "체스 말이 아닙니다.";
@@ -22,7 +23,7 @@ public class ChessBoard {
 	private final List<Row> rows;
 	private final Turn turn;
 
-	public ChessBoard(List<Row> rows, Turn turn) {
+	public Board(List<Row> rows, Turn turn) {
 		this.rows = new ArrayList<>(rows);
 		this.turn = turn;
 	}
@@ -36,36 +37,35 @@ public class ChessBoard {
 			.anyMatch(chessPiece -> chessPiece.getClass() == King.class);
 	}
 
-	public List<ChessPiece> findAll() {
+	public List<Piece> findAll() {
 		return rows.stream()
-			.map(row -> row.getChessPieces())
-			.flatMap(chessPieces -> chessPieces.stream())
+			.map(Row::getPieces)
+			.flatMap(Collection::stream)
 			.collect(Collectors.toList());
 	}
 
-
-	private List<ChessPiece> findByTeam(Team team) {
+	private List<Piece> findByTeam(Team team) {
 		return rows.stream()
 			.map(row -> row.findByTeam(team))
-			.flatMap(chessPieces -> chessPieces.stream())
+			.flatMap(Collection::stream)
 			.collect(Collectors.toList());
 	}
 
-	public void move(Position startPosition, Position targetPosition) {
-		ChessPiece startPiece = findByPosition(startPosition);
+	public void move(Position source, Position target) {
+		Piece startPiece = findByPosition(source);
 		turn.validateTurn(startPiece);
-		ChessPiece targetPiece = findByPosition(targetPosition);
+		Piece targetPiece = findByPosition(target);
 
 		checkTeam(startPiece, targetPiece);
 		startPiece.canMove(targetPiece, this::findByPosition);
 
-		replace(startPosition, new Blank(startPosition));
-		replace(targetPosition, startPiece);
+		replace(source, new Blank(source));
+		replace(target, startPiece);
 
 		turn.changeTurn();
 	}
 
-	public ChessPiece findByPosition(Position position) {
+	public Piece findByPosition(Position position) {
 		return rows.stream()
 			.filter(row -> row.contains(position))
 			.map(row -> row.findByPosition(position))
@@ -73,26 +73,26 @@ public class ChessBoard {
 			.orElseThrow(() -> new IllegalArgumentException(CANNOT_MOVE_PATH));
 	}
 
-	private void checkTeam(ChessPiece startPiece, ChessPiece targetPiece) {
-		validateNotBlank(startPiece);
-		validateOtherTeam(startPiece, targetPiece);
+	private void checkTeam(Piece source, Piece target) {
+		validateNotBlank(source);
+		validateOtherTeam(source, target);
 	}
 
-	private void validateNotBlank(ChessPiece startPiece) {
-		if (startPiece.isBlankPiece()) {
+	private void validateNotBlank(Piece source) {
+		if (source.isBlankPiece()) {
 			throw new IllegalArgumentException(NOT_CHESS_PIECE_MESSAGE);
 		}
 	}
 
-	private void validateOtherTeam(ChessPiece startPiece, ChessPiece targetPiece) {
-		if (startPiece.isSameTeam(targetPiece)) {
+	private void validateOtherTeam(Piece source, Piece target) {
+		if (source.isSameTeam(target)) {
 			throw new IllegalArgumentException(SAME_TEAM_MESSAGE);
 		}
 	}
 
-	private void replace(Position targetPosition, ChessPiece startPiece) {
+	private void replace(Position targetPosition, Piece source) {
 		Row row = findRow(targetPosition);
-		row.replace(targetPosition, startPiece);
+		row.replace(targetPosition, source);
 	}
 
 	private Row findRow(Position targetPosition) {
@@ -106,10 +106,6 @@ public class ChessBoard {
 		return new Status(rows);
 	}
 
-	public List<Row> getRows() {
-		return Collections.unmodifiableList(rows);
-	}
-
 	public boolean isWhiteTurn() {
 		return turn.isWhiteTurn();
 	}
@@ -120,7 +116,7 @@ public class ChessBoard {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		ChessBoard that = (ChessBoard)o;
+		Board that = (Board)o;
 		return Objects.equals(rows, that.rows) &&
 			Objects.equals(turn, that.turn);
 	}
@@ -129,4 +125,9 @@ public class ChessBoard {
 	public int hashCode() {
 		return Objects.hash(rows, turn);
 	}
+
+	public List<Row> getRows() {
+		return Collections.unmodifiableList(rows);
+	}
+
 }

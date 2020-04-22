@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import chess.domain.Team;
 import chess.domain.position.Position;
 
-public class ChessPieceTest {
-	private ChessPiece pawn;
+public class PieceTest {
+	private Piece pawn;
 
 	@BeforeEach
 	void setUp() {
@@ -18,7 +18,7 @@ public class ChessPieceTest {
 
 	@Test
 	void isBlankPieceTest() {
-		ChessPiece blank = new Blank(Position.of(1, 1));
+		Piece blank = new Blank(Position.of(1, 1));
 
 		assertThat(blank.isBlankPiece()).isTrue();
 	}
@@ -42,8 +42,8 @@ public class ChessPieceTest {
 
 	@Test
 	void isSameTeamTest() {
-		ChessPiece blackTeamKing = new King(Position.of(2, 2), Team.BLACK);
-		ChessPiece whiteTeamKing = new King(Position.of(2, 2), Team.WHITE);
+		Piece blackTeamKing = new King(Position.of(2, 2), Team.BLACK);
+		Piece whiteTeamKing = new King(Position.of(2, 2), Team.WHITE);
 
 		assertThat(pawn.isSameTeam(blackTeamKing)).isTrue();
 		assertThat(pawn.isSameTeam(whiteTeamKing)).isFalse();

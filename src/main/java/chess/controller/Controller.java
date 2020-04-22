@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chess.domain.Result;
-import chess.domain.chessboard.ChessBoard;
-import chess.domain.chesspiece.ChessPiece;
+import chess.domain.chessboard.Board;
+import chess.domain.chesspiece.Piece;
 import chess.domain.position.Position;
 import chess.service.ChessService;
 import com.google.gson.Gson;
@@ -15,20 +15,20 @@ import com.google.gson.GsonBuilder;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
-public class ChessController {
+public class Controller {
 	private static final HandlebarsTemplateEngine HANDLEBARS_TEMPLATE_ENGINE = new HandlebarsTemplateEngine();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	private final ChessService chessService;
 
-	public ChessController(ChessService chessService) {
+	public Controller(ChessService chessService) {
 		this.chessService = chessService;
 	}
 
-	private static String getBoardJson(ChessBoard chessBoard) {
+	private static String getBoardJson(Board board) {
 		Map<String, Object> model = new HashMap<>();
-		for (ChessPiece chessPiece : chessBoard.findAll()) {
-			model.put(chessPiece.getPositionName(), chessPiece.getName());
+		for (Piece piece : board.findAll()) {
+			model.put(piece.getPosition().getString(), piece.getName());
 		}
 		return GSON.toJson(model);
 	}
@@ -48,8 +48,8 @@ public class ChessController {
 		post("/move", (req, res) -> {
 			Position startPosition = Position.of(req.queryParams("startPosition"));
 			Position targetPosition = Position.of(req.queryParams("targetPosition"));
-			ChessBoard chessBoard = chessService.move(startPosition, targetPosition);
-			return getBoardJson(chessBoard);
+			Board board = chessService.move(startPosition, targetPosition);
+			return getBoardJson(board);
 		});
 
 		get("/isEnd", (req, res) -> {
@@ -67,7 +67,7 @@ public class ChessController {
 			return GSON.toJson(model);
 		});
 
-		get("/restart", (req, res) -> chessService.restart());
+		get("/restart", (req, res) -> getBoardJson(chessService.restart()));
 
 		get("/status", (req, res) -> {
 			ChessService chessService = new ChessService();
@@ -77,6 +77,7 @@ public class ChessController {
 			model.put("whiteTeamScore", result.getWhiteTeamScore());
 			return GSON.toJson(model);
 		});
+
 		exception(IllegalArgumentException.class,
 			((exception, request, response) -> response.body(exception.getMessage())));
 		exception(UnsupportedOperationException.class,

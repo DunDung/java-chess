@@ -6,7 +6,7 @@ import java.util.Objects;
 import chess.domain.Direction;
 
 public class PositionGap {
-	private static final String WRONG_POSITION_MESSAGE = "올지않은 좌표입니다.";
+	private static final String WRONG_POSITION_MESSAGE = "옳지않은 좌표입니다.";
 	private static final int START_COUNT = 1;
 	private static final int KNIGHT_MOVE_FIRST_VALUE = 1;
 	private static final int KNIGHT_MOVE_SECOND_VALUE = 2;
@@ -31,7 +31,7 @@ public class PositionGap {
 	}
 
 	public boolean cannotMoveKnight() {
-		return canMoveKnight() == false;
+		return !canMoveKnight();
 
 	}
 

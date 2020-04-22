@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import chess.domain.Direction;
-import chess.domain.Team;
 
 public class Position {
 	private static final int MIN_INT = 1;
@@ -20,6 +19,11 @@ public class Position {
 
 	private final int x;
 	private final int y;
+
+	private Position(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
 	public static Position of(int x, int y) {
 		validateIntRange(x);
@@ -51,10 +55,6 @@ public class Position {
 		}
 	}
 
-	private Position(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 
 	public Position plus(Direction direction) {
 		return new Position(direction.plusX(x), direction.plusY(y));
@@ -68,6 +68,7 @@ public class Position {
 		int pathX = direction.plusX(x);
 		int pathY = direction.plusY(y);
 		List<Position> positions = new ArrayList<>();
+
 		while (new Position(pathX, pathY).isNotEquals(targetPosition)) {
 			positions.add(new Position(pathX, pathY));
 			pathX = direction.plusX(pathX);
@@ -77,7 +78,15 @@ public class Position {
 	}
 
 	private boolean isNotEquals(Position targetPosition) {
-		return this.equals(targetPosition) == false;
+		return !this.equals(targetPosition);
+	}
+
+	public boolean isRowEquals(int row) {
+		return x == row;
+	}
+
+	public String getString() {
+		return y + "" + (char)x + ALPHABET_DEFORMATION_VALUE;
 	}
 
 	@Override
@@ -99,9 +108,5 @@ public class Position {
 	@Override
 	public String toString() {
 		return ((char)(y + ALPHABET_DEFORMATION_VALUE)) + "" + x;
-	}
-
-	public boolean isRowEquals(int row) {
-		return x == row;
 	}
 }

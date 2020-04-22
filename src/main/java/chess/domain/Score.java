@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import chess.domain.chesspiece.Bishop;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.Knight;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.chesspiece.Queen;
 import chess.domain.chesspiece.Rook;
 
@@ -24,16 +24,16 @@ public enum Score {
 	private static final String NOT_HAVE_SCORE_MESSAGE = "더할 숫자가 없습니다.";
 
 	private final double score;
-	private final Predicate<ChessPiece> predicate;
+	private final Predicate<Piece> predicate;
 
-	Score(double score, Predicate<ChessPiece> predicate) {
+	Score(double score, Predicate<Piece> predicate) {
 		this.score = score;
 		this.predicate = predicate;
 	}
 
-	public static Score of(ChessPiece chessPiece) {
+	public static Score of(Piece piece) {
 		return Arrays.stream(values())
-			.filter(val -> val.predicate.test(chessPiece))
+			.filter(val -> val.predicate.test(piece))
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException(NOT_MATCH_MESSAGE));
 	}

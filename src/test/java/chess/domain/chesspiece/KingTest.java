@@ -10,7 +10,7 @@ import chess.domain.position.Position;
 public class KingTest {
 	@Test
 	void validateMoveTest() {
-		ChessPiece king = new King(Position.of(4, 4), Team.BLACK);
+		Piece king = new King(Position.of(4, 4), Team.BLACK);
 		king.validateCanGo(new Blank(Position.of(3, 4)));
 		king.validateCanGo(new Blank(Position.of(4, 5)));
 		king.validateCanGo(new Blank(Position.of(3, 3)));

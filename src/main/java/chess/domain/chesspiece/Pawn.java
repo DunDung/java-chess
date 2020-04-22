@@ -11,7 +11,7 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public class Pawn extends ChessPiece {
+public class Pawn extends Piece {
 	private static final String NAME = "p";
 
 
@@ -37,14 +37,14 @@ public class Pawn extends ChessPiece {
 	}
 
 	@Override
-	public Positions makePathAndValidate(ChessPiece targetPiece) {
+	public Positions makePathAndValidate(Piece targetPiece) {
 		validateCanGo(targetPiece);
 		return moveManager.makePath(
 			targetPiece.position, getCanGoDirections());
 	}
 
 	@Override
-	public void validateCanGo(ChessPiece targetPiece) {
+	public void validateCanGo(Piece targetPiece) {
 		Direction direction = moveManager.getMatchDirection(targetPiece.position);
 		moveManager.validateMove(direction, getCanGoDirections());
 		if (cannotMove(direction, targetPiece)) {
@@ -66,13 +66,13 @@ public class Pawn extends ChessPiece {
 		return directions;
 	}
 
-	private boolean cannotMove(Direction direction, ChessPiece targetPiece) {
+	private boolean cannotMove(Direction direction, Piece targetPiece) {
 		return canMoveForward(direction, targetPiece) == false
 			&& canToCatch(direction, targetPiece) == false;
 	}
 
-	private boolean canMoveForward(Direction direction, ChessPiece chessPiece) {
-		return isCanMoveDirection(direction) && chessPiece.isBlankPiece();
+	private boolean canMoveForward(Direction direction, Piece piece) {
+		return isCanMoveDirection(direction) && piece.isBlankPiece();
 	}
 
 	private boolean isCanMoveDirection(Direction direction) {
@@ -80,7 +80,7 @@ public class Pawn extends ChessPiece {
 			|| direction == DOUBLE_UP || direction == DOUBLE_DOWN;
 	}
 
-	private boolean canToCatch(Direction direction, ChessPiece targetPiece) {
+	private boolean canToCatch(Direction direction, Piece targetPiece) {
 		return isCanCatchDirection(direction) && targetPiece.isNotBlankPiece();
 	}
 

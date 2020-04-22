@@ -1,25 +1,25 @@
 package chess.domain.chessgame;
 
-import chess.domain.chessboard.ChessBoard;
+import chess.domain.chessboard.Board;
 import chess.domain.factory.BoardFactory;
 import chess.view.InputView;
 import chess.view.OutputView;
 
 public class ChessGame {
-	private final ChessBoard chessBoard;
+	private final Board board;
 	private Command command;
 
 	public ChessGame() {
-		this.chessBoard = BoardFactory.createBoard();
+		this.board = BoardFactory.createBoard();
 	}
 
 	public void play() {
 		OutputView.printRule();
 		initMenu();
 		command.validateStart();
-		OutputView.printBoard(chessBoard);
+		OutputView.printBoard(board);
 
-		while (command.isNotEnd() && chessBoard.isLiveBothKing()) {
+		while (command.isNotEnd() && board.isLiveBothKing()) {
 			initMenu();
 			playRound();
 		}
@@ -42,8 +42,8 @@ public class ChessGame {
 
 	private void playRound() {
 		try {
-			command.execute(chessBoard);
-			OutputView.printBoard(chessBoard);
+			command.execute(board);
+			OutputView.printBoard(board);
 		} catch (Exception e) {
 			OutputView.printErrorMessage(e);
 		}

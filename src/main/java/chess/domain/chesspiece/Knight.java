@@ -3,7 +3,7 @@ package chess.domain.chesspiece;
 import chess.domain.Team;
 import chess.domain.position.Position;
 
-public class Knight extends WorthlessPiece {
+public class Knight extends RouteUncheckPiece {
 	private static final String NAME = "n";
 
 	public Knight(Position position, Team team) {
@@ -21,7 +21,7 @@ public class Knight extends WorthlessPiece {
 	}
 
 	@Override
-	public void validateCanGo(ChessPiece targetPiece) {
+	public void validateCanGo(Piece targetPiece) {
 		moveManager.validateKnightMove(targetPiece.position);
 	}
 }

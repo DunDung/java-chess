@@ -3,7 +3,7 @@ package chess.domain.chesspiece;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public class Blank extends ChessPiece {
+public class Blank extends Piece {
 	private static final String NAME = ".";
 	private static final String NOT_SUPPORT_MESSAGE = "BLANK에서는 지원하지 않는 기능입니다.";
 
@@ -22,12 +22,12 @@ public class Blank extends ChessPiece {
 	}
 
 	@Override
-	public Positions makePathAndValidate(ChessPiece targetPiece) {
+	public Positions makePathAndValidate(Piece targetPiece) {
 		throw new UnsupportedOperationException(NOT_SUPPORT_MESSAGE);
 	}
 
 	@Override
-	public void validateCanGo(ChessPiece targetPiece) {
+	public void validateCanGo(Piece targetPiece) {
 		throw new UnsupportedOperationException(NOT_SUPPORT_MESSAGE);
 	}
 }

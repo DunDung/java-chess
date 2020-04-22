@@ -2,7 +2,7 @@ package chess;
 
 import static spark.Spark.*;
 
-import chess.controller.ChessController;
+import chess.controller.Controller;
 import chess.service.ChessService;
 
 public class WebUIChessApplication {
@@ -11,6 +11,7 @@ public class WebUIChessApplication {
 		staticFileLocation("/templates");
 
 		ChessService chessService = new ChessService();
-		new ChessController(chessService).run();
+		Controller controller = new Controller(chessService);
+		controller.run();
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import chess.domain.chesspiece.ChessPiece;
+import chess.domain.chesspiece.Piece;
 
 public class Positions {
 	private static final String HAVE_ROADBLOCK_MESSAGE = "이동 경로에 장애물이 있습니다.";
@@ -16,13 +16,13 @@ public class Positions {
 		this.positions = new ArrayList<>(positions);
 	}
 
-	public void validateCanMovePath(Function<Position, ChessPiece> function) {
+	public void validateCanMovePath(Function<Position, Piece> function) {
 		if (containsNotBlank(function)) {
 			throw new IllegalArgumentException(HAVE_ROADBLOCK_MESSAGE);
 		}
 	}
 
-	private boolean containsNotBlank(Function<Position, ChessPiece> function) {
+	private boolean containsNotBlank(Function<Position, Piece> function) {
 		return positions.stream()
 			.map(function)
 			.anyMatch(chessPiece -> chessPiece.isNotBlankPiece());

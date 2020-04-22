@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.Pawn;
+import chess.domain.chesspiece.Piece;
 import chess.domain.position.Position;
 
 public class TurnTest {
@@ -19,7 +19,7 @@ public class TurnTest {
 
 	@Test
 	void validateTurnTest() {
-		ChessPiece whitePawn = new Pawn(Position.of(2, 2), Team.WHITE);
+		Piece whitePawn = new Pawn(Position.of(2, 2), Team.WHITE);
 
 		turn.validateTurn(whitePawn);
 		turn.changeTurn();

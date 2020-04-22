@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import chess.domain.Team;
 import chess.domain.chesspiece.Blank;
-import chess.domain.chesspiece.ChessPiece;
 import chess.domain.chesspiece.King;
+import chess.domain.chesspiece.Piece;
 import chess.domain.position.Position;
 
 public class PieceConverterTest {
@@ -16,16 +16,16 @@ public class PieceConverterTest {
 	@DisplayName("King인 경우")
 	@Test
 	void convertTest() {
-		ChessPiece chessPiece = PieceConverter.convert("k", "h2");
+		Piece piece = PieceConverter.convert("k", "h2");
 
-		assertThat(chessPiece).isEqualTo(new King(Position.of("h2"), Team.WHITE));
+		assertThat(piece).isEqualTo(new King(Position.of("h2"), Team.WHITE));
 	}
 
 	@DisplayName("BLANK인 경우")
 	@Test
 	void convertTest2() {
-		ChessPiece chessPiece = PieceConverter.convert(".", "h2");
+		Piece piece = PieceConverter.convert(".", "h2");
 
-		assertThat(chessPiece).isEqualTo(new Blank(Position.of("h2")));
+		assertThat(piece).isEqualTo(new Blank(Position.of("h2")));
 	}
 }

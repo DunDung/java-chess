@@ -13,7 +13,7 @@ $.ajax({
 function showBoard(response) {
     for (position in response) {
         const pieceName = response[position];
-        if (pieceName == '.') {
+        if (pieceName === '.') {
             continue;
         }
         document.getElementById(position).classList.add(pieceName);
@@ -24,7 +24,7 @@ function showBoard(response) {
 let startPosition = '';
 $('.cell').click(function () {
     const targetPosition = $(this).attr('id');
-    if (startPosition == '') {
+    if (startPosition === '') {
         startPosition = targetPosition;
     } else {
         requestMove(startPosition, targetPosition);
@@ -51,7 +51,7 @@ function move(position) {
     let startPositionClassName = getChessPieceClassName(position.startPosition);
     let targetPositionClassName = getChessPieceClassName(position.targetPosition);
 
-    if (targetPositionClassName != '') {
+    if (targetPositionClassName !== '') {
         getClassList(position.targetPosition).remove(targetPositionClassName);
     }
     getClassList(position.startPosition).remove(startPositionClassName);
@@ -78,7 +78,7 @@ function checkKingDie() {
             alert("isEnd Error")
         },
         success: function (response) {
-            if (response.isEnd == false) {
+            if (!response.isEnd) {
                 return;
             }
             $('.result').show();
@@ -104,8 +104,8 @@ function restart() {
         type: 'get',
         url: '/restart',
         dataType: 'json',
-        error: function () {
-            alert("restart Error");
+        error: function (request, status, error) {
+            alert(request.status + "\n" + request.responseText + "\n" + error + "\n" + status);
         },
         success: function (response) {
             setTimeout(() => remove(response), 0);
@@ -117,7 +117,7 @@ function restart() {
 function remove(response) {
     for (position in response) {
         const className = getChessPieceClassName(position);
-        if (className != '') {
+        if (className !== '') {
             getClassList(position).remove(className);
         }
     }

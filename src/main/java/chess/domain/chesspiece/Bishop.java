@@ -10,7 +10,7 @@ import chess.domain.Team;
 import chess.domain.position.Position;
 import chess.domain.position.Positions;
 
-public class Bishop extends ValuablePiece {
+public class Bishop extends RouteCheckPiece {
 	private static final List<Direction> DIRECTIONS;
 	private static final String NAME = "b";
 
@@ -23,18 +23,18 @@ public class Bishop extends ValuablePiece {
 	}
 
 	@Override
-	public Positions makePathAndValidate(ChessPiece targetPiece) {
+	public Positions makePathAndValidate(Piece targetPiece) {
 		return moveManager.makePath(targetPiece.position, DIRECTIONS);
-	}
-
-	@Override
-	public String getName() {
-		return team.parseName(NAME);
 	}
 
 	@Override
 	public boolean isNotNeedCheckPath() {
 		return false;
+	}
+
+	@Override
+	public String getName() {
+		return team.parseName(NAME);
 	}
 
 }
