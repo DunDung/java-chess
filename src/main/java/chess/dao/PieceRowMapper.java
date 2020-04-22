@@ -16,13 +16,13 @@ public class PieceRowMapper implements RowMapper<List<PieceDTO>> {
 	}
 
 	private List<PieceDTO> mapPiece(ResultSet resultSet) throws SQLException {
-		List<PieceDTO> pieceDTOS = new ArrayList<>();
+		List<PieceDTO> pieceDTOs = new ArrayList<>();
 
 		while (resultSet.next()) {
 			String position = resultSet.getString("position");
 			String name = resultSet.getString("name");
-			pieceDTOS.add(PieceDTO.from(PieceConverter.convert(position, name)));
+			pieceDTOs.add(PieceDTO.from(PieceConverter.convert(position, name)));
 		}
-		return pieceDTOS;
+		return pieceDTOs;
 	}
 }
