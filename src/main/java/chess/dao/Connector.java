@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import jdbc.DataAccessException;
+import chess.jdbc.DataAccessException;
 
 public class Connector {
 
@@ -19,7 +19,7 @@ public class Connector {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			return DriverManager.getConnection(
-				"jdbc:mysql://" + server + "/" + database + option, userName, password);
+				"chess.jdbc:mysql://" + server + "/" + database + option, userName, password);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException(e);
